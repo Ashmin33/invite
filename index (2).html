@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farhat & Tohid — A Nikah Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;500&family=Scheherazade+New:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d08a;
+    --gold-dark: #8a6820;
+    --cream: #fdf6e8;
+    --deep: #1a0e05;
+    --rose: #8b3a4a;
+    --rose-light: #c97a8a;
+    --green: #2d5a3d;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    font-family: 'IM Fell English', serif;
+    color: var(--cream);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── LOADING SCREEN ─── */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--deep);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .loader-bismillah {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeInUp 1.5s ease 0.5s forwards;
+    text-shadow: 0 0 40px rgba(201,168,76,0.5);
+  }
+  .loader-sub {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    opacity: 0;
+    margin-top: 1rem;
+    animation: fadeInUp 1.5s ease 1.2s forwards;
+  }
+  .loader-divider {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.5rem auto;
+    opacity: 0;
+    animation: fadeInUp 1.5s ease 1.8s forwards;
+  }
+  .loader-names {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeInUp 1.5s ease 2s forwards;
+    text-align: center;
+    line-height: 1;
+  }
+  .loader-names span { color: var(--gold); }
+
+  .loader-btn {
+    margin-top: 2.5rem;
+    padding: 0.8rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeInUp 1.5s ease 2.8s forwards;
+    transition: background 0.3s, color 0.3s;
+    text-transform: uppercase;
+  }
+  .loader-btn:hover { background: var(--gold); color: var(--deep); }
+
+  /* ─── PETALS ANIMATION ─── */
+  .petal {
+    position: fixed;
+    top: -40px;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0;
+    animation: petalFall linear infinite;
+  }
+  .petal::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 40% 40%, #e8a0b0, #c0405a88);
+    border-radius: 50% 0 50% 0;
+    transform: rotate(45deg);
+  }
+
+  @keyframes petalFall {
+    0% { top: -40px; opacity: 0.9; transform: translateX(0) rotate(0deg); }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.6; }
+    100% { top: 110vh; opacity: 0; transform: translateX(100px) rotate(720deg); }
+  }
+
+  /* ─── MAIN PAGE ─── */
+  #main-page {
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+  #main-page.visible { opacity: 1; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 0% 100%, rgba(139,58,74,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(45,90,61,0.1) 0%, transparent 50%),
+      #0f0804;
+  }
+
+  /* Decorative frame corners */
+  .corner {
+    position: absolute;
+    width: 120px; height: 120px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .corner svg { width: 100%; height: 100%; }
+  .corner-tl { top: 20px; left: 20px; }
+  .corner-tr { top: 20px; right: 20px; transform: scaleX(-1); }
+  .corner-bl { bottom: 20px; left: 20px; transform: scaleY(-1); }
+  .corner-br { bottom: 20px; right: 20px; transform: scale(-1,-1); }
+
+  /* Floating flowers */
+  .flower-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .flower-svg {
+    position: absolute;
+    opacity: 0;
+    animation: flowerReveal 2s ease forwards;
+  }
+
+  @keyframes flowerReveal {
+    0% { opacity: 0; transform: scale(0.6) rotate(-10deg); }
+    100% { opacity: var(--target-opacity, 0.18); transform: scale(1) rotate(0deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 700px;
+    opacity: 0;
+    animation: heroReveal 2s ease 0.5s forwards;
+  }
+
+  @keyframes heroReveal {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .bismillah {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 30px rgba(201,168,76,0.4);
+  }
+
+  .invite-label {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.55rem, 1.5vw, 0.72rem);
+    letter-spacing: 0.45em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .gold-line {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; margin: 1rem auto;
+  }
+  .gold-line::before, .gold-line::after {
+    content: '';
+    flex: 1; max-width: 100px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .gold-line::after { background: linear-gradient(90deg, var(--gold), transparent); }
+  .gold-line-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  .couple-names {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(3.5rem, 12vw, 7rem);
+    line-height: 1;
+    color: var(--cream);
+    margin: 0.3rem 0;
+    text-shadow:
+      0 2px 20px rgba(201,168,76,0.3),
+      0 0 60px rgba(201,168,76,0.1);
+  }
+  .couple-names .amp {
+    color: var(--gold);
+    font-size: 0.7em;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0.2em;
+  }
+
+  .tagline {
+    font-style: italic;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    color: rgba(253,246,232,0.65);
+    margin: 1rem 0 2rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── DATE BADGE ─── */
+  .date-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(201,168,76,0.35);
+    padding: 1rem 2.5rem;
+    margin: 1.5rem auto;
+    position: relative;
+    background: rgba(201,168,76,0.04);
+  }
+  .date-badge::before, .date-badge::after {
+    content: '❧';
+    position: absolute;
+    color: var(--gold);
+    font-size: 1rem;
+    opacity: 0.5;
+  }
+  .date-badge::before { top: -0.5rem; left: 50%; transform: translateX(-50%); }
+  .date-badge::after { bottom: -0.5rem; left: 50%; transform: translateX(-50%) rotate(180deg); }
+  .date-day {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .date-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--cream);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+  .date-hijri {
+    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+    color: rgba(253,246,232,0.5);
+    letter-spacing: 0.15em;
+    font-style: italic;
+  }
+
+  /* ─── SCROLL HINT ─── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInUp 1s ease 3s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: rgba(201,168,76,0.5);
+    text-transform: uppercase;
+  }
+  .scroll-arrow {
+    width: 20px; height: 20px;
+    border-right: 1px solid rgba(201,168,76,0.4);
+    border-bottom: 1px solid rgba(201,168,76,0.4);
+    transform: rotate(45deg);
+    animation: bounce 1.5s ease infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+
+  /* ─── SECTIONS ─── */
+  section {
+    position: relative;
+    padding: 5rem 1.5rem;
+    overflow: hidden;
+  }
+
+  /* Alternating backgrounds */
+  .section-dark {
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(139,58,74,0.08) 0%, transparent 70%),
+      #0f0804;
+  }
+  .section-mid {
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 50%, rgba(45,90,61,0.06) 0%, transparent 60%),
+      #120b05;
+  }
+
+  .section-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-ornament {
+    font-size: 1.8rem;
+    color: var(--gold);
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    color: var(--cream);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 30px rgba(201,168,76,0.2);
+  }
+
+  /* ─── DETAILS CARDS ─── */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+  @media (max-width: 500px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .detail-card {
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 1.5rem 1rem;
+    background: rgba(201,168,76,0.03);
+    position: relative;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .detail-card:hover {
+    border-color: rgba(201,168,76,0.45);
+    background: rgba(201,168,76,0.06);
+  }
+  .detail-card::before {
+    content: attr(data-ornament);
+    position: absolute;
+    top: -0.7rem; left: 50%; transform: translateX(-50%);
+    background: #0f0804;
+    padding: 0 0.5rem;
+    font-size: 1.1rem;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+  .detail-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--cream);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* ─── QUOTE ─── */
+  .quranic-quote {
+    border-left: 2px solid var(--gold);
+    padding: 1.2rem 1.5rem;
+    margin: 2rem auto;
+    max-width: 480px;
+    text-align: left;
+    background: rgba(201,168,76,0.04);
+  }
+  .quranic-quote p {
+    font-style: italic;
+    color: rgba(253,246,232,0.75);
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    line-height: 1.8;
+  }
+  .quranic-quote cite {
+    display: block;
+    margin-top: 0.7rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* ─── HOSTS ─── */
+  .hosts-block {
+    margin: 2rem 0;
+  }
+  .host-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.8vw, 1.25rem);
+    color: rgba(253,246,232,0.85);
+    line-height: 2;
+    font-weight: 300;
+  }
+  .host-name {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  /* ─── VENUE BUTTON ─── */
+  .venue-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .venue-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: 0;
+  }
+  .venue-btn:hover::before { transform: translateX(0); }
+  .venue-btn:hover { color: var(--deep); }
+  .venue-btn span, .venue-btn svg { position: relative; z-index: 1; }
+
+  /* ─── TIMELINE / SCHEDULE ─── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 2rem 0;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    transform: translateX(-50%);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: center;
+    gap: 0;
+    padding: 0.8rem 0;
+  }
+  .timeline-left { text-align: right; padding-right: 1.5rem; }
+  .timeline-right { text-align: left; padding-left: 1.5rem; }
+  .timeline-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px rgba(201,168,76,0.5);
+    margin: auto;
+    position: relative; z-index: 1;
+  }
+  .timeline-time {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+  }
+  .timeline-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    color: var(--cream);
+    font-style: italic;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #080503;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+  .footer-names {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .footer-tagline {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: rgba(253,246,232,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ─── REVEAL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── MUSIC TOGGLE ─── */
+  .music-btn {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    z-index: 1000;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: rgba(15,8,4,0.85);
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--gold);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: fadeInUp 1s ease 4s forwards;
+  }
+  .music-btn:hover {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,168,76,0.3);
+  }
+  .music-btn.playing .bar { animation: musicBars 0.8s ease infinite alternate; }
+  .music-bars { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+  .bar {
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    transform-origin: bottom;
+  }
+  .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .bar:nth-child(2) { height: 12px; animation-delay: 0.1s; }
+  .bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+  .bar:nth-child(4) { height: 14px; animation-delay: 0.3s; }
+  @keyframes musicBars {
+    0% { transform: scaleY(0.4); }
+    100% { transform: scaleY(1.2); }
+  }
+
+  /* ─── VERSE CARDS ─── */
+  .verse-card {
+    position: relative;
+    margin: 2rem auto;
+    padding: 2rem 1.8rem 1.5rem;
+    border: 1px solid rgba(201,168,76,0.22);
+    background: linear-gradient(135deg, rgba(201,168,76,0.04), rgba(139,58,74,0.04));
+    text-align: center;
+    transition: border-color 0.4s, background 0.4s;
+  }
+  .verse-card:hover {
+    border-color: rgba(201,168,76,0.45);
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(139,58,74,0.06));
+  }
+  .verse-number {
+    position: absolute;
+    top: -0.9rem; left: 50%; transform: translateX(-50%);
+    background: #0f0804;
+    padding: 0 0.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .verse-arabic {
+    font-family: 'Scheherazade New', 'Amiri', 'Traditional Arabic', serif;
+    font-size: clamp(1.3rem, 4vw, 1.75rem);
+    color: var(--gold-light);
+    line-height: 2.2;
+    direction: rtl;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(201,168,76,0.2);
+  }
+  .verse-divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1rem auto;
+  }
+  .verse-english {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(0.88rem, 2vw, 1rem);
+    color: rgba(253,246,232,0.72);
+    line-height: 1.9;
+    max-width: 520px;
+    margin: 0 auto 0.8rem;
+  }
+  .verse-ref {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .arabic-text {
+    font-family: 'Scheherazade New', 'Amiri', 'Traditional Arabic', serif;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--gold-light);
+    line-height: 2;
+    direction: rtl;
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+  .arabic-translation {
+    font-style: italic;
+    color: rgba(253,246,232,0.75);
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    line-height: 1.8;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .corner { width: 70px; height: 70px; }
+    .corner-tl, .corner-tr { top: 10px; }
+    .corner-bl, .corner-br { bottom: 10px; }
+    .corner-tl, .corner-bl { left: 10px; }
+    .corner-tr, .corner-br { right: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── LOADER ─── -->
+<div id="loader">
+  <p class="loader-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+  <p class="loader-sub">In the name of Allah, the Most Gracious, the Most Merciful</p>
+  <div class="loader-divider"></div>
+  <div class="loader-names">
+    <span>Farhat</span> &amp; <span>Tohid</span>
+  </div>
+  <button class="loader-btn" id="enter-btn">Open With Music ♪</button>
+</div>
+
+<!-- ─── MUSIC TOGGLE ─── -->
+<button class="music-btn" id="music-btn" title="Toggle Music">
+  <div class="music-bars">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</button>
+
+<!-- ─── PETALS CONTAINER ─── -->
+<div id="petals"></div>
+
+<!-- ─── MAIN PAGE ─── -->
+<div id="main-page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <!-- Corner decorations -->
+    <div class="corner corner-tl">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 95 L5 5 L95 5" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+        <path d="M5 60 L5 5 L60 5" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+        <circle cx="5" cy="5" r="3" fill="#c9a84c" fill-opacity="0.7"/>
+        <path d="M20 5 Q12 12 5 20" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.4" fill="none"/>
+        <text x="12" y="30" fill="#c9a84c" fill-opacity="0.25" font-size="18" font-family="serif">✿</text>
+        <text x="22" y="18" fill="#c9a84c" fill-opacity="0.2" font-size="12" font-family="serif">✿</text>
+      </svg>
+    </div>
+    <div class="corner corner-tr">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 95 L5 5 L95 5" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+        <path d="M5 60 L5 5 L60 5" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+        <circle cx="5" cy="5" r="3" fill="#c9a84c" fill-opacity="0.7"/>
+        <path d="M20 5 Q12 12 5 20" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.4" fill="none"/>
+        <text x="12" y="30" fill="#c9a84c" fill-opacity="0.25" font-size="18" font-family="serif">✿</text>
+      </svg>
+    </div>
+    <div class="corner corner-bl">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 95 L5 5 L95 5" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+        <path d="M5 60 L5 5 L60 5" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+        <circle cx="5" cy="5" r="3" fill="#c9a84c" fill-opacity="0.7"/>
+        <text x="12" y="30" fill="#c9a84c" fill-opacity="0.25" font-size="18" font-family="serif">✿</text>
+      </svg>
+    </div>
+    <div class="corner corner-br">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 95 L5 5 L95 5" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+        <path d="M5 60 L5 5 L60 5" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+        <circle cx="5" cy="5" r="3" fill="#c9a84c" fill-opacity="0.7"/>
+        <text x="12" y="30" fill="#c9a84c" fill-opacity="0.25" font-size="18" font-family="serif">✿</text>
+      </svg>
+    </div>
+
+    <!-- Floating flower decorations -->
+    <div class="flower-bg">
+      <svg class="flower-svg" style="top:5%;left:3%;width:180px;--target-opacity:0.15;animation-delay:0.5s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#8b3a4a" fill-opacity="0.6" transform="rotate(0,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#c97a8a" fill-opacity="0.4" transform="rotate(45,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(90,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#c97a8a" fill-opacity="0.4" transform="rotate(135,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(180,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#c97a8a" fill-opacity="0.35" transform="rotate(225,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(270,100,100)"/>
+          <ellipse cx="100" cy="60" rx="22" ry="45" fill="#c97a8a" fill-opacity="0.35" transform="rotate(315,100,100)"/>
+          <circle cx="100" cy="100" r="18" fill="#c9a84c" fill-opacity="0.7"/>
+          <circle cx="100" cy="100" r="10" fill="#e8d08a" fill-opacity="0.8"/>
+        </g>
+      </svg>
+
+      <svg class="flower-svg" style="top:5%;right:3%;width:150px;--target-opacity:0.12;animation-delay:0.8s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none">
+          <ellipse cx="100" cy="60" rx="18" ry="40" fill="#c97a8a" fill-opacity="0.7" transform="rotate(0,100,100)"/>
+          <ellipse cx="100" cy="60" rx="18" ry="40" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(60,100,100)"/>
+          <ellipse cx="100" cy="60" rx="18" ry="40" fill="#c97a8a" fill-opacity="0.6" transform="rotate(120,100,100)"/>
+          <ellipse cx="100" cy="60" rx="18" ry="40" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(180,100,100)"/>
+          <ellipse cx="100" cy="60" rx="18" ry="40" fill="#c97a8a" fill-opacity="0.6" transform="rotate(240,100,100)"/>
+          <ellipse cx="100" cy="60" rx="18" ry="40" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(300,100,100)"/>
+          <circle cx="100" cy="100" r="15" fill="#c9a84c" fill-opacity="0.75"/>
+        </g>
+      </svg>
+
+      <svg class="flower-svg" style="bottom:8%;left:5%;width:140px;--target-opacity:0.13;animation-delay:1s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <ellipse cx="100" cy="65" rx="16" ry="38" fill="#d4896e" fill-opacity="0.6" transform="rotate(0,100,100)"/>
+          <ellipse cx="100" cy="65" rx="16" ry="38" fill="#e8b09a" fill-opacity="0.5" transform="rotate(72,100,100)"/>
+          <ellipse cx="100" cy="65" rx="16" ry="38" fill="#d4896e" fill-opacity="0.55" transform="rotate(144,100,100)"/>
+          <ellipse cx="100" cy="65" rx="16" ry="38" fill="#e8b09a" fill-opacity="0.5" transform="rotate(216,100,100)"/>
+          <ellipse cx="100" cy="65" rx="16" ry="38" fill="#d4896e" fill-opacity="0.55" transform="rotate(288,100,100)"/>
+          <circle cx="100" cy="100" r="16" fill="#c9a84c" fill-opacity="0.8"/>
+        </g>
+      </svg>
+
+      <svg class="flower-svg" style="bottom:8%;right:5%;width:160px;--target-opacity:0.14;animation-delay:1.2s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#8b3a4a" fill-opacity="0.55" transform="rotate(0,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#c97a8a" fill-opacity="0.45" transform="rotate(45,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(90,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#c97a8a" fill-opacity="0.4" transform="rotate(135,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(180,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#c97a8a" fill-opacity="0.4" transform="rotate(225,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(270,100,100)"/>
+          <ellipse cx="100" cy="58" rx="20" ry="44" fill="#c97a8a" fill-opacity="0.4" transform="rotate(315,100,100)"/>
+          <circle cx="100" cy="100" r="18" fill="#c9a84c" fill-opacity="0.7"/>
+          <circle cx="100" cy="100" r="9" fill="#fdf6e8" fill-opacity="0.5"/>
+        </g>
+      </svg>
+
+      <!-- Mid-page flowers -->
+      <svg class="flower-svg" style="top:42%;left:1%;width:110px;--target-opacity:0.1;animation-delay:1.5s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#c97a8a" fill-opacity="0.6" transform="rotate(0,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(60,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#c97a8a" fill-opacity="0.55" transform="rotate(120,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(180,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#c97a8a" fill-opacity="0.55" transform="rotate(240,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(300,100,100)"/>
+          <circle cx="100" cy="100" r="14" fill="#c9a84c" fill-opacity="0.7"/>
+        </g>
+      </svg>
+
+      <svg class="flower-svg" style="top:42%;right:1%;width:110px;--target-opacity:0.1;animation-delay:1.7s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#c97a8a" fill-opacity="0.6" transform="rotate(0,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(60,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#c97a8a" fill-opacity="0.55" transform="rotate(120,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(180,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#c97a8a" fill-opacity="0.55" transform="rotate(240,100,100)"/>
+          <ellipse cx="100" cy="65" rx="15" ry="36" fill="#8b3a4a" fill-opacity="0.5" transform="rotate(300,100,100)"/>
+          <circle cx="100" cy="100" r="14" fill="#c9a84c" fill-opacity="0.7"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Hero content -->
+    <div class="hero-content">
+      <p class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+      <div class="gold-line"><div class="gold-line-dot"></div></div>
+      <p class="invite-label">Nikah Invitation</p>
+      <h1 class="couple-names">
+        Farhat<span class="amp">&amp;</span>Tohid
+      </h1>
+      <p class="tagline">"And He placed between you affection and mercy" — Quran 30:21</p>
+      <div class="date-badge">
+        <span class="date-day">Saturday</span>
+        <span class="date-main">2nd May 2026</span>
+        <span class="date-hijri">14 Dhul-Qa'dah 1447 AH</span>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll to discover</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div>
+
+  <!-- ABOUT / FAMILIES -->
+  <section class="section-dark">
+    <div class="section-inner reveal">
+      <span class="section-ornament">✦</span>
+      <p class="section-title">With the Blessings of Allah</p>
+      <h2 class="section-heading">Two Families, One Union</h2>
+      <div class="gold-line"><div class="gold-line-dot"></div></div>
+
+      <div class="quranic-quote">
+        <p class="arabic-text">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</p>
+        <p class="arabic-translation">And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy.</p>
+        <cite>Surah Ar-Rum — 30:21</cite>
+      </div>
+
+      <div class="hosts-block">
+        <p class="host-line">
+          <span class="host-name">Mr. &amp; Mrs. Owais Ahmed</span>
+        </p>
+        <p class="host-line" style="font-size:0.85em;color:rgba(253,246,232,0.5);font-style:italic">
+          Son of Late Abdul Lateef Momin
+        </p>
+        <p class="host-line" style="margin-top:1rem;">
+          joyfully announce the Nikah of their daughter
+        </p>
+        <p class="host-line" style="font-family:'Great Vibes',cursive;font-size:clamp(1.8rem,5vw,2.5rem);color:var(--gold-light);margin:0.3rem 0;">
+          Farhat
+        </p>
+        <p class="host-line">with</p>
+        <p class="host-line" style="font-family:'Great Vibes',cursive;font-size:clamp(1.8rem,5vw,2.5rem);color:var(--gold-light);margin:0.3rem 0;">
+          Tohid
+        </p>
+        <p class="host-line" style="margin-top:0.5rem;">
+          Son of <span class="host-name">Salim Sheikh</span>, Solapur
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT DETAILS -->
+  <section class="section-mid">
+    <div class="section-inner reveal">
+      <span class="section-ornament">❧</span>
+      <p class="section-title">Event Details</p>
+      <h2 class="section-heading">The Celebration</h2>
+      <div class="gold-line"><div class="gold-line-dot"></div></div>
+
+      <div class="detail-grid">
+        <div class="detail-card" data-ornament="✦">
+          <p class="detail-label">Date</p>
+          <p class="detail-value">Saturday<br>2nd May 2026</p>
+        </div>
+        <div class="detail-card" data-ornament="◈">
+          <p class="detail-label">Islamic Date</p>
+          <p class="detail-value">14 Dhul-Qa'dah<br>1447 AH</p>
+        </div>
+        <div class="detail-card" data-ornament="⏲">
+          <p class="detail-label">Time</p>
+          <p class="detail-value">11:00 AM<br>Onwards</p>
+        </div>
+        <div class="detail-card" data-ornament="✿">
+          <p class="detail-label">Occasion</p>
+          <p class="detail-value">Nikah &amp;<br>Daawat-e-Taam</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <p class="timeline-time">11:00 AM</p>
+          </div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-right">
+            <p class="timeline-event">Nikah Ceremony</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <p class="timeline-event">Daawat-e-Taam</p>
+          </div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-right">
+            <p class="timeline-time">Lunch Feast</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <p class="timeline-time">Blessings &amp; Du'a</p>
+          </div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-right">
+            <p class="timeline-event">For the Couple</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENUE -->
+  <section class="section-dark">
+    <div class="section-inner reveal">
+      <span class="section-ornament">🌙</span>
+      <p class="section-title">Venue</p>
+      <h2 class="section-heading">Find Us Here</h2>
+      <div class="gold-line"><div class="gold-line-dot"></div></div>
+
+      <div style="margin:1.5rem 0;">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,4vw,1.8rem);color:var(--gold-light);margin-bottom:0.3rem;">Shadab Marriage Hall</p>
+        <p style="font-family:'IM Fell English',serif;font-style:italic;color:rgba(253,246,232,0.65);font-size:0.95rem;line-height:1.8;">
+          Baug-e-Firdous, Bhiwandi
+        </p>
+      </div>
+
+      <a class="venue-btn" href="https://maps.app.goo.gl/LqBbD9KCnXiAme2y7" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>Open in Google Maps</span>
+      </a>
+
+
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="section-mid">
+    <div class="section-inner reveal">
+      <span class="section-ornament">✦ ✦ ✦</span>
+      <h2 class="section-heading">You Are Warmly Invited</h2>
+      <div class="gold-line"><div class="gold-line-dot"></div></div>
+
+      <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.15rem);color:rgba(253,246,232,0.7);line-height:2;margin:1.5rem 0;font-style:italic;">
+        Your presence and blessings will be the greatest gift.<br>
+        Please honour us with your company on this joyous occasion<br>
+        as we begin a new chapter together, insha'Allah.
+      </p>
+
+      <div style="margin-top:2rem;padding:1.5rem;border:1px solid rgba(201,168,76,0.2);background:rgba(201,168,76,0.03);">
+        <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:0.8rem;">Hosted By</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--cream);">Mr. &amp; Mrs. Owais Ahmed</p>
+        <p style="font-style:italic;color:rgba(253,246,232,0.45);font-size:0.85rem;margin-top:0.3rem;">(Son of Late Abdul Lateef Momin)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QURAN VERSES -->
+  <section class="section-dark">
+    <div class="section-inner reveal">
+      <span class="section-ornament">☽</span>
+      <p class="section-title">Words of Allah</p>
+      <h2 class="section-heading">From the Holy Quran</h2>
+      <div class="gold-line"><div class="gold-line-dot"></div></div>
+      <p style="font-family:'IM Fell English',serif;font-style:italic;color:rgba(253,246,232,0.45);font-size:0.85rem;margin-bottom:2.5rem;">Sacred verses on the blessing of marriage</p>
+
+      <!-- Verse 1 -->
+      <div class="verse-card reveal">
+        <div class="verse-number">١</div>
+        <p class="verse-arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</p>
+        <div class="verse-divider"></div>
+        <p class="verse-english">"And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought."</p>
+        <p class="verse-ref">Surah Ar-Rum · 30:21</p>
+      </div>
+
+      <!-- Verse 2 -->
+      <div class="verse-card reveal">
+        <div class="verse-number">٢</div>
+        <p class="verse-arabic">هُنَّ لِبَاسٌ لَّكُمْ وَأَنتُمْ لِبَاسٌ لَّهُنَّ</p>
+        <div class="verse-divider"></div>
+        <p class="verse-english">"They are clothing for you and you are clothing for them."</p>
+        <p class="verse-ref">Surah Al-Baqarah · 2:187</p>
+      </div>
+
+      <!-- Verse 3 -->
+      <div class="verse-card reveal">
+        <div class="verse-number">٣</div>
+        <p class="verse-arabic">وَعَاشِرُوهُنَّ بِالْمَعْرُوفِ ۚ فَإِن كَرِهْتُمُوهُنَّ فَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَيَجْعَلَ اللَّهُ فِيهِ خَيْرًا كَثِيرًا</p>
+        <div class="verse-divider"></div>
+        <p class="verse-english">"And live with them in kindness. For if you dislike them — perhaps you dislike a thing and Allah makes therein much good."</p>
+        <p class="verse-ref">Surah An-Nisa' · 4:19</p>
+      </div>
+
+      <!-- Verse 4 -->
+      <div class="verse-card reveal">
+        <div class="verse-number">٤</div>
+        <p class="verse-arabic">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</p>
+        <div class="verse-divider"></div>
+        <p class="verse-english">"Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous."</p>
+        <p class="verse-ref">Surah Al-Furqan · 25:74</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-names">Farhat &amp; Tohid</div>
+    <div class="gold-line" style="max-width:200px;margin:0.8rem auto;"><div class="gold-line-dot"></div></div>
+    <p class="footer-tagline">2nd May 2026 · Shadab Marriage Hall, Bhiwandi</p>
+    <p style="margin-top:1.5rem;font-family:'Great Vibes',cursive;font-size:1.4rem;color:var(--gold);opacity:0.5;">بارك الله لهما وبارك عليهما</p>
+    <p style="font-size:0.7rem;color:rgba(253,246,232,0.2);margin-top:0.5rem;font-style:italic;">May Allah bless them both and bring blessing upon them</p>
+
+    <!-- RSVP -->
+    <div style="margin-top:2.5rem;">
+      <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.35em;color:rgba(201,168,76,0.5);text-transform:uppercase;margin-bottom:1rem;">Kindly Confirm Your Attendance</p>
+      <a id="rsvp-btn" class="venue-btn" style="display:inline-flex;text-decoration:none;" href="#" onclick="sendRSVP(event)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.93 5.93l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/>
+        </svg>
+        <span>RSVP via WhatsApp</span>
+      </a>
+    </div>
+
+    <div style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.08);">
+      <p style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:rgba(253,246,232,0.15);text-transform:uppercase;">Crafted with love by</p>
+      <p style="font-family:'Great Vibes',cursive;font-size:1.6rem;color:rgba(201,168,76,0.35);margin-top:0.2rem;">Ashmin</p>
+    </div>
+  </footer>
+
+</div><!-- end #main-page -->
+
+<script>
+  // ─── RSVP ───
+  function sendRSVP(e) {
+    e.preventDefault();
+    const message = encodeURIComponent("Assalamu Alaikum! 🌸\n\nI would love to attend the Nikah of Farhat & Tohid on 2 May 2026, InshaAllah.\n\nJazakAllah Khair for the invitation! 🤍");
+    window.open("https://wa.me/?text=" + message, "_blank");
+  }
+
+  // ─── PETALS ───
+  function createPetals() {
+    const container = document.getElementById('petals');
+    for (let i = 0; i < 18; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      const size = 12 + Math.random() * 18;
+      petal.style.cssText = `
+        left: ${Math.random() * 100}%;
+        width: ${size}px;
+        height: ${size}px;
+        animation-duration: ${6 + Math.random() * 8}s;
+        animation-delay: ${Math.random() * 10}s;
+      `;
+      container.appendChild(petal);
+    }
+  }
+  createPetals();
+
+  // ─── WEB AUDIO ENGINE — Soulful Ambient Music ───
+  let audioCtx = null;
+  let masterGain = null;
+  let musicPlaying = false;
+  let scheduledNodes = [];
+
+  function createAudioContext() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGain.connect(audioCtx.destination);
+  }
+
+  // Soulful oud/sitar-like melodic scale (D minor pentatonic)
+  const scale = [293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 698.46];
+  const bassScale = [73.42, 87.31, 98.00, 110.00, 130.81];
+
+  function playTone(freq, startTime, duration, gainVal, type = 'sine', detune = 0) {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1800, startTime);
+    filter.Q.setValueAtTime(1.5, startTime);
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, startTime);
+    osc.detune.setValueAtTime(detune, startTime);
+
+    env.gain.setValueAtTime(0, startTime);
+    env.gain.linearRampToValueAtTime(gainVal, startTime + 0.15);
+    env.gain.setValueAtTime(gainVal, startTime + duration - 0.2);
+    env.gain.linearRampToValueAtTime(0, startTime + duration);
+
+    osc.connect(filter);
+    filter.connect(env);
+    env.connect(masterGain);
+
+    osc.start(startTime);
+    osc.stop(startTime + duration + 0.05);
+    scheduledNodes.push(osc);
+    return osc;
+  }
+
+  function addReverb(input) {
+    const convolver = audioCtx.createConvolver();
+    const bufferSize = audioCtx.sampleRate * 2.5;
+    const impulse = audioCtx.createBuffer(2, bufferSize, audioCtx.sampleRate);
+    for (let c = 0; c < 2; c++) {
+      const data = impulse.getChannelData(c);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2.5);
+      }
+    }
+    convolver.buffer = impulse;
+    const wet = audioCtx.createGain();
+    wet.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    input.connect(convolver);
+    convolver.connect(wet);
+    wet.connect(masterGain);
+  }
+
+  // Melodic pattern — looping ambient composition
+  const melody = [0, 2, 3, 5, 4, 3, 5, 7, 6, 5, 3, 2, 0, 2, 4, 3];
+  const rhythm  = [0.6, 0.4, 0.5, 0.7, 0.4, 0.5, 0.6, 0.8, 0.5, 0.4, 0.6, 0.5, 0.7, 0.4, 0.5, 0.6];
+  let loopTimeout = null;
+
+  function scheduleLoop(startTime) {
+    if (!musicPlaying) return;
+    let t = startTime;
+
+    // Pad drone — two harmonics
+    playTone(bassScale[0], t, 7, 0.045, 'sine');
+    playTone(bassScale[0] * 1.5, t, 7, 0.02, 'sine', 3);
+    playTone(bassScale[2], t + 3.5, 7, 0.04, 'sine', -3);
+
+    // Melody notes
+    melody.forEach((idx, i) => {
+      const freq = scale[idx];
+      const dur = rhythm[i] * 1.6;
+      playTone(freq, t, dur, 0.055, 'triangle', 5);
+      playTone(freq * 2, t, dur * 0.6, 0.015, 'sine', -5);  // harmonic shimmer
+      t += rhythm[i] * 1.25;
+    });
+
+    // Gentle percussive ping
+    for (let p = 0; p < 4; p++) {
+      const pt = startTime + p * (t - startTime) / 4;
+      playTone(scale[4] * 3, pt, 0.18, 0.03, 'sine');
+    }
+
+    const loopDuration = (t - startTime) * 1000 + 200;
+    loopTimeout = setTimeout(() => scheduleLoop(audioCtx.currentTime + 0.05), loopDuration);
+  }
+
+  function startMusic() {
+    createAudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    musicPlaying = true;
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.55, audioCtx.currentTime + 3.5);
+    scheduleLoop(audioCtx.currentTime + 0.1);
+    document.getElementById('music-btn').classList.add('playing');
+  }
+
+  function stopMusic() {
+    musicPlaying = false;
+    if (loopTimeout) clearTimeout(loopTimeout);
+    if (masterGain) {
+      masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.2);
+    }
+    document.getElementById('music-btn').classList.remove('playing');
+  }
+
+  // ─── ENTER BUTTON ───
+  const enterBtn = document.getElementById('enter-btn');
+  const loader = document.getElementById('loader');
+  const mainPage = document.getElementById('main-page');
+  const musicBtn = document.getElementById('music-btn');
+
+  enterBtn.addEventListener('click', () => {
+    startMusic();
+    loader.classList.add('hidden');
+    mainPage.classList.add('visible');
+    initReveal();
+  });
+
+  // ─── MUSIC TOGGLE ───
+  musicBtn.addEventListener('click', () => {
+    if (musicPlaying) {
+      stopMusic();
+    } else {
+      startMusic();
+    }
+  });
+
+  // ─── SCROLL REVEAL ───
+  function initReveal() {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+  }
+</script>
+</body>
+</html>
